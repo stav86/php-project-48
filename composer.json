@@ -1,0 +1,30 @@
+{
+    "name": "hexlet/code",
+    "description": "Difference calculator",
+    "autoload": {
+        "psr-4": {
+            "Stepanaverin\\PhpProject48\\": "src/"
+        },
+        "files": [
+            "src/parse.php",
+            "src/differ.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "stav86",
+            "email": "averin.stepan16@yandex.ru"
+        }
+    ],
+    "license": "proprietary",
+    "require": {
+        "docopt/docopt": "^1.0"
+    },
+    "bin": [
+        "bin/gendiff"
+    ],
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.12",
+        "phpunit/phpunit": "^12.1"
+    }
+}

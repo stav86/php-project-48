@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use function Docopt\docopt;
+
+$doc = <<<DOC
+
+Generate diff
+
+
+Usage:
+    gendiff (-h|--help)
+    gendiff (-v|version)
+    gendiff [--format <fmt>] <firstFile> <secondFile>
+
+Options:
+    -h --help       Show this screen
+    -v --version    Show version
+    --format <fmt>  Report format [default: stylish]
+
+DOC;
+
+$args = Docopt::handle($doc, array('version'=>'1.0.0'));
+
+$firstFileData = GenDiff\Src\Parse\parseJsonFile($args['<firstFile>']);
+$secondFileData = GenDiff\Src\Parse\parseJsonFile($args['<secondFile>']);
+
+$result = GenDiff\Src\Differ\genDiff($firstFileData, $secondFileData);
+print $result;
