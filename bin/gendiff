@@ -24,8 +24,9 @@ DOC;
 
 $args = Docopt::handle($doc, array('version'=>'1.0.0'));
 
-$firstFileData = GenDiff\Src\Parse\parseJsonFile($args['<firstFile>']);
-$secondFileData = GenDiff\Src\Parse\parseJsonFile($args['<secondFile>']);
+$firstFileData = GenDiff\Src\Parsers\parseData($args['<firstFile>']);
+$secondFileData = GenDiff\Src\Parsers\parseData($args['<secondFile>']);
 
 $result = GenDiff\Src\Differ\genDiff($firstFileData, $secondFileData);
-print $result;
+
+echo GenDiff\Src\Formatter\getStylish($result);

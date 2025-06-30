@@ -2,36 +2,30 @@
 
 namespace GenDiff\Src\Differ;
 
-function format($data)
-{
-    if (is_string($data)) {
-        return $data;
-    } elseif (is_bool($data)) {
-        return $data ? 'true' : 'false';
-    }
-    return $data;
-}
+require __DIR__ . '/../vendor/autoload.php';
 
-function genDiff($firstFileData, $secondFileData)
-{
-    $keys = array_unique(array_merge(array_keys($firstFileData), array_keys($secondFileData)));
+function genDiff($data1, $data2) {
+    $result = [];
+    $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     sort($keys);
-    $diff = [];
-
+    
     foreach ($keys as $key) {
-        if (array_key_exists($key, $firstFileData) && array_key_exists($key, $secondFileData)) {
-            if ($firstFileData[$key] === $secondFileData[$key]) {
-                $diff[] = "  $key: " . format($firstFileData[$key]);
-            } else {
-                $diff[] = "- $key: " . format($firstFileData[$key]);
-                $diff[] = "+ $key: " . format($secondFileData[$key]);
-            }
-        } elseif (array_key_exists($key, $firstFileData)) {
-            $diff[] = "- $key: " . format($firstFileData[$key]);
-        } elseif (array_key_exists($key, $secondFileData)) {
-            $diff[] = "+ $key: " . format($secondFileData[$key]);
+        if (!array_key_exists($key, $data1)) {
+            $result[$key] = ['status' => 'added', 'value' => $data2[$key]];
+        } elseif (!array_key_exists($key, $data2)) {
+            $result[$key] = ['status' => 'removed', 'value' => $data1[$key]];
+        } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
+            $result[$key] = ['status' => 'nested', 'children' => genDiff($data1[$key], $data2[$key])];
+        } elseif ($data1[$key] !== $data2[$key]) {
+            $result[$key] = [
+                'status' => 'changed',
+                'old_value' => $data1[$key],
+                'new_value' => $data2[$key],
+            ];
+        } else {
+            $result[$key] = ['status' => 'unchanged', 'value' => $data1[$key]];
         }
     }
-
-    return implode("\n", $diff) . "\n";
+    return $result;
 }
+

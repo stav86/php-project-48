@@ -5,5 +5,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=stav86_php-project-48)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48)
 
 
-Demo GenDiff
-https://asciinema.org/a/sY44lRCPbyICGP1e53zAnv2mZ
+Demo Compare Json Files
+https://asciinema.org/a/OTwBrGlGAsOexMLsHKpgOWfNj
+
+Demo Compare Yaml Files
+https://asciinema.org/a/vPeP3d4yRy6gL4EIpw81u21Sd
