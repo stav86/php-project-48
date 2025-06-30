@@ -29,4 +29,4 @@ $secondFileData = GenDiff\Src\Parsers\parseData($args['<secondFile>']);
 
 $result = GenDiff\Src\Differ\genDiff($firstFileData, $secondFileData);
 
-echo GenDiff\Src\Formatter\getStylish($result);
+print_r (GenDiff\Src\Formatter\getStylish($result));

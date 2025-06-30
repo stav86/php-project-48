@@ -2,13 +2,15 @@
 
 namespace GenDiff\Src\Differ;
 
-require __DIR__ . '/../vendor/autoload.php';
+use Funct;
 
-function genDiff($data1, $data2) {
+function genDiff(array $data1, array $data2): array
+{
     $result = [];
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    sort($keys);
-    
+    Funct\Collection\sortBy($keys, function ($item) {
+        return $item;
+    });
     foreach ($keys as $key) {
         if (!array_key_exists($key, $data1)) {
             $result[$key] = ['status' => 'added', 'value' => $data2[$key]];
@@ -28,4 +30,3 @@ function genDiff($data1, $data2) {
     }
     return $result;
 }
-
