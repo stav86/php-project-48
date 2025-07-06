@@ -12,4 +12,3 @@ function getFormatters($result, $format)
         return stylish\getStylish($result);
     }
 }
- 
