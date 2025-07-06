@@ -2,16 +2,14 @@
 
 namespace GenDiff\Src\Differ;
 
-use Funct;
+use function Funct\Collection\sortBy;
 
-function genDiff(array $data1, array $data2): array
+function genDiff(array $data1, array $data2, $format = 'stylish'): array
 {
     $result = [];
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    Funct\Collection\sortBy($keys, function ($item) {
-        return $item;
-    });
-    foreach ($keys as $key) {
+    $sortedKeys = sortBy($keys, fn($key) => $key);
+    foreach ($sortedKeys as $key) {
         if (!array_key_exists($key, $data1)) {
             $result[$key] = ['status' => 'added', 'value' => $data2[$key]];
         } elseif (!array_key_exists($key, $data2)) {

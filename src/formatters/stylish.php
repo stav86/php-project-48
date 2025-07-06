@@ -1,8 +1,8 @@
 <?php
 
-namespace GenDiff\Src\Formatter;
+namespace GenDiff\Src\Formatters\Stylish;
 
-function getStylish(array $diff, int $depth = 1): string
+function getStylish(array $diff, int $depth = 1, bool $root = true): string
 {
     $indent = getIndent($depth);
     $result = [];
@@ -23,12 +23,16 @@ function getStylish(array $diff, int $depth = 1): string
                 break;
             case 'nested':
                 $result[] = $indent . "  " . $key . ": {";
-                $result[] = getStylish($item['children'], $depth + 1);
+                $result[] = getStylish($item['children'], $depth + 1, false);
                 $result[] = $indent . "  }";
                 break;
         }
     }
-    return "{\n" . implode("\n", $result) . "\n}";
+    if ($root) {
+        return "{\n" . implode("\n", $result) . "\n}\n";
+    } else {
+        return implode("\n", $result);
+    }
 }
 
 function formatValue($value, int $depth = 0): string
