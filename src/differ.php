@@ -4,7 +4,7 @@ namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
 
-function genDiff(array $data1, array $data2, $format = 'stylish'): array
+function genDiff($data1, $data2, $format = 'stylish'): array
 {
     $result = [];
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
