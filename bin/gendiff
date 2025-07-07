@@ -29,6 +29,6 @@ $secondFileData = GenDiff\Src\Parsers\parseData($args['<secondFile>']);
 
 $format = $args['--format'] ?? 'stylish';
 
-$result = GenDiff\Src\Differ\Differ\genDiff($firstFileData, $secondFileData, $format);
+$result = Differ\Differ\genDiff($firstFileData, $secondFileData, $format);
 
 print_r(GenDiff\Src\Formatters\getFormatters($result, $format));

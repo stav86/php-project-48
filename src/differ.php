@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Differ\Differ;
+namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
 

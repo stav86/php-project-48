@@ -4,7 +4,7 @@ namespace GenDiff\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
-use function GenDiff\Src\Differ\Differ\genDiff;
+use function Differ\Differ\genDiff;
 use function GenDiff\Src\Formatters\Stylish\getStylish;
 use function GenDiff\Src\Formatters\Plain\getPlain;
 use function GenDiff\Src\Formatters\Json\getJson;
