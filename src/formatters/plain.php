@@ -37,7 +37,7 @@ function formatValue($val)
         return 'false';
     } elseif ($val === true) {
         return 'true';
-    } elseif (is_scalar($val)) {
+    } elseif (is_string($val)) {
         return "'" . $val . "'";
     } elseif (is_int($val)) {
         return $val;
