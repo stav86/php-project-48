@@ -23,6 +23,9 @@ function getPlain(array $diff, $prefix = '')
             case 'nested':
                 $result[] = getPlain($item['children'], $fullPath);
                 break;
+            default:
+                $result[] = "Unknown";
+                break;
         }
     }
     return implode("\n", $result);

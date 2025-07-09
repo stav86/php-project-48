@@ -26,6 +26,9 @@ function getStylish(array $diff, int $depth = 1, bool $root = true): string
                 $result[] = getStylish($item['children'], $depth + 1, false);
                 $result[] = $indent . "  }";
                 break;
+            default:
+                $result[] = "Unknown";
+                break;
         }
     }
     if ($root) {
