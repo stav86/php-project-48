@@ -4,7 +4,7 @@ namespace GenDiff\Src\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseData($filePath)
+function parseData($filePath): array
 {
     $extension = pathinfo($filePath, PATHINFO_EXTENSION);
     $parsers = [
@@ -18,7 +18,9 @@ function parseData($filePath)
             return Yaml::parse(file_get_contents($file));
         },
     ];
-
+    if (!array_key_exists($extension, $parsers)) {
+        throw new InvalidArgumentException("Unsupported file extension: $extension");
+    }
     $parser = array_values(array_filter(
         $parsers,
         fn ($key) => $key === $extension,

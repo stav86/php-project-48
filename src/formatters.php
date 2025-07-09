@@ -2,7 +2,7 @@
 
 namespace GenDiff\Src\Formatters;
 
-function getFormatters($result, $format)
+function getFormatters(array $result, string $format)
 {
     $formatters = [
         'plain' => function ($formatter) {
