@@ -4,8 +4,11 @@ namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
 
-function genDiff($data1, $data2, $format = 'stylish'): array
+function genDiff(array $data1, array $data2, $format = 'stylish'): array
 {
+    if (!is_array($data1) || !is_array($data2)) {
+        throw new InvalidArgumentException('Both arguments must be arrays.');
+    }
     $result = [];
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
