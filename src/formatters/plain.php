@@ -38,7 +38,7 @@ function formatValue($val)
     } elseif ($val === true) {
         return 'true';
     } elseif (is_string($val)) {
-        return "'" . $val . "'";
+        return "'$val'";
     } elseif (is_int($val)) {
         return $val;
     } else {

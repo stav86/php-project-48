@@ -4,11 +4,17 @@ namespace GenDiff\Src\Formatters;
 
 function getFormatters($result, $format)
 {
-    if ($format == 'plain') {
-        return plain\getPlain($result);
-    } elseif ($format == 'json') {
-        return json\getJson($result);
-    } else {
-        return stylish\getStylish($result);
-    }
+    $formatters = [
+        'plain' => function($formatter) {
+            return plain\getPlain($formatter);
+        },
+        'json' => function($formatter) {
+            return json\getJson($formatter);
+        },
+        'stylish' => function($formatter) {
+            return stylish\getStylish($formatter);
+        },
+    ];
+    return isset($formatters[$format]) ? $formatters[$format]($result) : null;
 }
+
