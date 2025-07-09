@@ -8,13 +8,13 @@ function parseData($filePath)
 {
     $extension = pathinfo($filePath, PATHINFO_EXTENSION);
     $parsers = [
-        'json' => function($file) {
+        'json' => function ($file) {
             return json_decode(file_get_contents($file), true);
         },
-        'yaml' => function($file) {
+        'yaml' => function ($file) {
             return Yaml::parse(file_get_contents($file));
         },
-        'yml' => function($file) {
+        'yml' => function ($file) {
             return Yaml::parse(file_get_contents($file));
         },
     ];
@@ -22,7 +22,7 @@ function parseData($filePath)
     $parser = array_values(array_filter(
         $parsers,
         fn ($key) => $key === $extension,
-        ARRAY_FILTER_USE_KEY))[0];
-        
+        ARRAY_FILTER_USE_KEY
+    ))[0];
     return $parser ? $parser($filePath) : null;
 }
