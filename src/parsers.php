@@ -12,7 +12,7 @@ function parseData($input)
     if (!is_string($input)) {
         return [$input];
     }
-    if ($input === '') {
+    if (trim($input) === '') {
         return [];
     }
     if (is_numeric($input)) {
@@ -23,6 +23,13 @@ function parseData($input)
         return [false];
     } elseif (strtolower($input) === 'null') {
         return [null];
+    }
+    if (file_exists($input)) {
+        $extension = pathinfo($input, PATHINFO_EXTENSION);
+        $data = file_get_contents($input);
+    } else {
+        $data = $input;
+        $extension = 'json';
     }
     $parsers = [
         'json' => function ($data) {
@@ -38,13 +45,13 @@ function parseData($input)
         'yml' => function ($data) {
             return Yaml::parse($data);
         },
-    ];
+        ];
     if (!array_key_exists($extension, $parsers)) {
-        throw new InvalidArgumentException("Unsupported file extension: $extension");
+        return [$data];
     }
     $result = $parsers[$extension]($data);
     if (!is_array($result)) {
-        throw new RuntimeException("Parsed data is not an array.");
+        return [$result];
     }
     return $result;
 }
