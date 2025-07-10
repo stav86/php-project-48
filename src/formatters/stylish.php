@@ -27,8 +27,7 @@ function getStylish(array $diff, int $depth = 1, bool $root = true): string
                 $result[] = $indent . "  }";
                 break;
             default:
-                $result[] = "Unknown";
-                break;
+                throw new \InvalidArgumentException("Unknown status '{$item['status']}'");
         }
     }
     if ($root) {

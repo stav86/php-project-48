@@ -23,9 +23,10 @@ function getPlain(array $diff, $prefix = '')
             case 'nested':
                 $result[] = getPlain($item['children'], $fullPath);
                 break;
-            default:
-                $result[] = "Unknown";
+            case 'unchanged':
                 break;
+            default:
+                throw new \InvalidArgumentException("Unknown status '{$item['status']}' for property '$fullPath'");
         }
     }
     return implode("\n", $result);
