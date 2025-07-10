@@ -30,5 +30,8 @@ function parseData($filePath)
     if (!$parser) {
         throw new InvalidArgumentException("Unsupported file extension: $extension");
     }
+    if (!is_array($result)) {
+        throw new RuntimeException("Parsed data is not an array.");
+    }
     return $parser($filePath);
 }
