@@ -2,8 +2,6 @@
 
 namespace GenDiff\Src\Formatters;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 function getFormatters(array $result, string $format)
 {
     $formatters = [
@@ -17,5 +15,6 @@ function getFormatters(array $result, string $format)
             return stylish\getStylish($formatter);
         },
     ];
-    return isset($formatters[$format]) ? $formatters[$format]($result) : throw new InvalidArgumentException("Unsupported file extension: $format");
+    return isset($formatters[$format]) ? $formatters[$format]($result) :
+        throw new InvalidArgumentException("Unsupported file extension: $format");
 }
