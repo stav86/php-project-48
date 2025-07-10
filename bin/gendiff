@@ -29,6 +29,9 @@ $secondFileData = GenDiff\Src\Parsers\parseData($args['<secondFile>']);
 
 $format = $args['--format'] ?? 'stylish';
 
+if (!is_array($firstFileData) || !is_array($secondFileData)) {
+    throw new RuntimeException("One of the parsed data is not an array.");
+}
 $result = Differ\Differ\genDiff($firstFileData, $secondFileData, $format);
 
 print_r(GenDiff\Src\Formatters\getFormatters($result, $format));
