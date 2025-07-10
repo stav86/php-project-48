@@ -8,6 +8,9 @@ const STYLISH = 'stylish';
 
 function genDiff($data1, $data2, $format = STYLISH): array
 {
+    if (!is_array($data1) || !is_array($data2)) {
+        throw new InvalidArgumentException("Incorrect format'");
+    }
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
     return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
