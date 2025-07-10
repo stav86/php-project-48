@@ -33,8 +33,12 @@ try {
 }
 $format = $args['--format'] ?? 'stylish';
 
-if (!is_array($firstFileData) || !is_array($secondFileData)) {
-    throw new RuntimeException("One of the parsed data is not an array.");
+try {
+    $firstFileData = parseData($args['<firstFile>']);
+    $secondFileData = parseData($args['<secondFile>']);
+} catch (RuntimeException $e) {
+    echo "Error parsing files: " . $e->getMessage() . PHP_EOL;
+    exit(1);
 }
 $result = Differ\Differ\genDiff($firstFileData, $secondFileData, $format);
 
