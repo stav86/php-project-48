@@ -23,5 +23,13 @@ function parseData($filePath): array
         fn ($key) => $key === $extension,
         ARRAY_FILTER_USE_KEY
     ))[0];
-    return $parser ? $parser($filePath) : throw new InvalidArgumentException("Unsupported file extension: $extension");
+    
+    if (!$parser) {
+        throw new InvalidArgumentException("Unsupported file extension: $extension");
+    }
+    try {
+        return $parser($filePath);
+    } catch (Exception $e) {
+        throw new RuntimeException("Error parsing file: " . $e->getMessage());
+    }
 }
