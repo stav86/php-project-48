@@ -6,16 +6,23 @@ use Symfony\Component\Yaml\Yaml;
 
 function parseData($input)
 {
-    if (is_string($input)) {
-        if (file_exists($input)) {
-            $extension = pathinfo($input, PATHINFO_EXTENSION);
-            $data = file_get_contents($input);
-        } else {
-            $data = $input;
-            $extension = 'json';
-        }
-    } else {
-        throw new InvalidArgumentException("Input must be a string.");
+    if (is_array($input)) {
+        return $input;
+    }
+    if (!is_string($input)) {
+        return [$input];
+    }
+    if ($input === '') {
+        return [];
+    }
+    if (is_numeric($input)) {
+        return [(float)$input];
+    } elseif (strtolower($input) === 'true') {
+        return [true];
+    } elseif (strtolower($input) === 'false') {
+        return [false];
+    } elseif (strtolower($input) === 'null') {
+        return [null];
     }
     $parsers = [
         'json' => function ($data) {
