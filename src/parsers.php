@@ -6,6 +6,9 @@ use Symfony\Component\Yaml\Yaml;
 
 function parseData($input)
 {
+    if (is_array($input)) {
+        return $input;
+    }
     if (file_exists($input)) {
         $extension = pathinfo($input, PATHINFO_EXTENSION);
         $data = file_get_contents($input);
