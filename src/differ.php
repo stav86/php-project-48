@@ -6,10 +6,8 @@ use function Funct\Collection\sortBy;
 
 const STYLISH = 'stylish';
 
-function genDiff(array $data1, array $data2, $format = STYLISH): array
+function genDiff($data1, $data2, $format = STYLISH): array
 {
-    var_dump($data1);
-    var_dump($data2);
     if (!is_array($data1) || !is_array($data2)) {
         throw new InvalidArgumentException("Incorrect format'");
     }
