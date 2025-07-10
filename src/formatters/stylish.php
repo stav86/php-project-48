@@ -2,42 +2,104 @@
 
 namespace GenDiff\Src\Formatters\Stylish;
 
-function getStylish(array $diff, int $depth = 1, bool $root = true): string
+const SPACES_PER_LEVEL = 4;
+const ADDED_PREFIX = '+ ';
+const REMOVED_PREFIX = '- ';
+const NESTED_PREFIX = '  ';
+const CLOSING_BRACE = '  }';
+const OPEN_BRACE = ': {';
+const COLON = ': ';
+const DEPTH = 1;
+
+function getStylish(array $diff, int $depth = DEPTH, bool $root = true): string
 {
     $indent = getIndent($depth);
     $result = [];
     foreach ($diff as $key => $item) {
         switch ($item['status']) {
             case 'added':
-                $result[] = $indent . "+ " . $key . ": " . formatValue($item['value'], $depth);
+                $result[] = sprintf(
+                    '%s%s%s%s%s',
+                    $indent,
+                    ADDED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth),
+                );
                 break;
             case 'removed':
-                $result[] = $indent . "- " . $key . ": " . formatValue($item['value'], $depth);
+                $result[] = sprintf(
+                    '%s%s%s%s%s',
+                    $indent,
+                    REMOVED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth),
+                );
                 break;
             case 'changed':
-                $result[] = $indent . "- " . $key . ": " . formatValue($item['old_value'], $depth);
-                $result[] = $indent . "+ " . $key . ": " . formatValue($item['new_value'], $depth);
+                $result[] = sprintf(
+                    '%s%s%s%s%s',
+                    $indent,
+                    REMOVED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['old_value'], $depth),
+                );
+                $result[] = sprintf(
+                    '%s%s%s%s%s',
+                    $indent,
+                    ADDED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['new_value'], $depth),
+                );
                 break;
             case 'unchanged':
-                $result[] = $indent . "  " . $key . ": " . formatValue($item['value'], $depth);
+                $result[] = sprintf(
+                    '%s%s%s%s%s',
+                    $indent,
+                    NESTED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth)
+                );
                 break;
             case 'nested':
-                $result[] = $indent . "  " . $key . ": {";
-                $result[] = getStylish($item['children'], $depth + 1, false);
-                $result[] = $indent . "  }";
+                $result[] = sprintf(
+                    '%s%s%s%s',
+                    $indent,
+                    NESTED_PREFIX,
+                    $key,
+                    OPEN_BRACE,
+                );
+                $result[] = sprintf(
+                    '%s',
+                    getStylish($item['children'], $depth + 1, false),
+                );
+                $result[] = sprintf(
+                    '%s%s',
+                    $indent,
+                    CLOSING_BRACE,
+                );
                 break;
             default:
                 throw new \InvalidArgumentException("Unknown status '{$item['status']}'");
         }
     }
     if ($root) {
-        return "{\n" . implode("\n", $result) . "\n}\n";
+        return sprintf(
+            '%s%s%s',
+            "{\n",
+            implode("\n", $result),
+            "\n}\n",
+        );
     } else {
         return implode("\n", $result);
     }
 }
 
-function formatValue($value, int $depth = 0): string
+function formatValue($value, int $depth = DEPTH): string
 {
     if (is_array($value)) {
         $indent = getIndent($depth + 1);
@@ -46,7 +108,12 @@ function formatValue($value, int $depth = 0): string
             $formattedValue = formatValue($value[$key], $depth + 1);
             return "{$indent}  {$key}: {$formattedValue}";
         }, array_keys($value));
-        return "{\n" . implode("\n", $items) . "\n{$closingIndent}  }";
+        return sprintf(
+            '%s%s%s',
+            "{\n",
+            implode("\n", $items),
+            "\n{$closingIndent}  }",
+        );
     }
 
     if ($value === false) {
@@ -60,7 +127,7 @@ function formatValue($value, int $depth = 0): string
     }
 }
 
-function getIndent(int $depth, int $spacesPerLevel = 4)
+function getIndent(int $depth = DEPTH, int $spacesPerLevel = SPACES_PER_LEVEL)
 {
     return str_repeat(' ', $depth * $spacesPerLevel - 2);
 }

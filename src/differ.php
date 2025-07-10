@@ -4,7 +4,9 @@ namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
 
-function genDiff(array $data1, array $data2, $format = 'stylish'): array
+const STYLISH = 'stylish';
+
+function genDiff(array $data1, array $data2, $format = STYLISH): array
 {
     if (!is_array($data1) || !is_array($data2)) {
         throw new \InvalidArgumentException("Incorrect format'");

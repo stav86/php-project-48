@@ -2,7 +2,9 @@
 
 namespace GenDiff\Src\Formatters\Plain;
 
-function getPlain(array $diff, $prefix = '')
+const PREFIX = '';
+
+function getPlain(array $diff, $prefix = PREFIX)
 {
     $result = [];
     foreach ($diff as $key => $item) {
