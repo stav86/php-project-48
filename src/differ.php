@@ -3,16 +3,17 @@
 namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
+use function GenDiff\Src\Parsers\parseData;
 
 const STYLISH = 'stylish';
 
 function genDiff($data1, $data2, $format = STYLISH): array
 {
     if (!is_array($data1)) {
-        $data1 = parsers\parseData($data1);
+        $data1 = parseData($data1);
     }
     if (!is_array($data2)) {
-        $data2 = parsers\parseData($data2);
+        $data2 = parseData($data2);
     }
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
