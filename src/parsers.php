@@ -15,15 +15,6 @@ function parseData($input)
     if ($input === '') {
         return [];
     }
-    if (is_numeric($input)) {
-        return [(float)$input];
-    } elseif (strtolower($input) === 'true') {
-        return [true];
-    } elseif (strtolower($input) === 'false') {
-        return [false];
-    } elseif (strtolower($input) === 'null') {
-        return [null];
-    }
     if (file_exists($input)) {
         $extension = pathinfo($input, PATHINFO_EXTENSION);
         $data = file_get_contents($input);
