@@ -4,9 +4,19 @@ namespace GenDiff\Src\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseData($filePath)
+function parseData($input)
 {
-    $extension = pathinfo($filePath, PATHINFO_EXTENSION);
+    if (is_string($input)) {
+        if (file_exists($input)) {
+            $extension = pathinfo($input, PATHINFO_EXTENSION);
+            $data = file_get_contents($input);
+        } else {
+            $data = $input;
+            $extension = 'json';
+        }
+    } else {
+        throw new InvalidArgumentException("Input must be a string.");
+    }
     $parsers = [
         'json' => function ($file) {
             $data = json_decode(file_get_contents($file), true);
