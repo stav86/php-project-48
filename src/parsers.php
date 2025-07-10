@@ -12,7 +12,8 @@ function parseData($input)
     if (!is_string($input)) {
         return [$input];
     }
-    if (trim($input) === '') {
+    $input = trim($input);
+    if ($input === '') {
         return [];
     }
     if (is_numeric($input)) {
