@@ -34,6 +34,9 @@ function parseData($input)
     }
     $parsers = [
         'json' => function ($data) {
+            if (!is_string($data)) {
+                throw new RuntimeException("Expected string for JSON decoding.");
+            }
             $decodedData = json_decode($data, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new RuntimeException("JSON decode error: " . json_last_error_msg());
@@ -41,9 +44,15 @@ function parseData($input)
             return $decodedData;
              },
         'yaml' => function ($data) {
+            if (!is_string($data)) {
+                throw new RuntimeException("Expected string for YAML parsing.");
+            }
             return Yaml::parse($data);
         },
         'yml' => function ($data) {
+            if (!is_string($data)) {
+                throw new RuntimeException("Expected string for YAML parsing.");
+            }
             return Yaml::parse($data);
         },
     ];
