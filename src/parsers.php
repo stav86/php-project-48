@@ -4,12 +4,16 @@ namespace GenDiff\Src\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseData($filePath): array
+function parseData($filePath)
 {
     $extension = pathinfo($filePath, PATHINFO_EXTENSION);
     $parsers = [
         'json' => function ($file) {
-            return json_decode(file_get_contents($file), true);
+            $data = json_decode(file_get_contents($file), true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new RuntimeException("JSON decode error: " . json_last_error_msg());
+            }
+            return $data;
         },
         'yaml' => function ($file) {
             return Yaml::parse(file_get_contents($file));
@@ -22,14 +26,9 @@ function parseData($filePath): array
         $parsers,
         fn ($key) => $key === $extension,
         ARRAY_FILTER_USE_KEY
-    ))[0];
-    
+    ))[0] ?? null;
     if (!$parser) {
         throw new InvalidArgumentException("Unsupported file extension: $extension");
     }
-    try {
-        return $parser($filePath);
-    } catch (Exception $e) {
-        throw new RuntimeException("Error parsing file: " . $e->getMessage());
-    }
+    return $parser($filePath);
 }
