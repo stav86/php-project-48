@@ -9,10 +9,9 @@ function genDiff(array $data1, array $data2, $format = 'stylish'): array
     if (!is_array($data1) || !is_array($data2)) {
         throw new \InvalidArgumentException("Incorrect format'");
     }
-    $result = [];
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
-    foreach ($sortedKeys as $key) {
+    return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
             $result[$key] = ['status' => 'added', 'value' => $data2[$key]];
         } elseif (!array_key_exists($key, $data2)) {
@@ -28,6 +27,6 @@ function genDiff(array $data1, array $data2, $format = 'stylish'): array
         } else {
             $result[$key] = ['status' => 'unchanged', 'value' => $data1[$key]];
         }
-    }
-    return $result;
+        return $result;
+    }, []);
 }

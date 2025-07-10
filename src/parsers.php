@@ -18,13 +18,10 @@ function parseData($filePath): array
             return Yaml::parse(file_get_contents($file));
         },
     ];
-    if (!array_key_exists($extension, $parsers)) {
-        throw new InvalidArgumentException("Unsupported file extension: $extension");
-    }
     $parser = array_values(array_filter(
         $parsers,
         fn ($key) => $key === $extension,
         ARRAY_FILTER_USE_KEY
     ))[0];
-    return $parser ? $parser($filePath) : null;
+    return $parser ? $parser($filePath) : throw new InvalidArgumentException("Unsupported file extension: $extension");
 }
