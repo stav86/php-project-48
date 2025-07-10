@@ -27,11 +27,12 @@ function parseData($filePath)
         fn ($key) => $key === $extension,
         ARRAY_FILTER_USE_KEY
     ))[0];
-    if (!$parser) {
+    if (!array_key_exists($extension, $parsers)) {
         throw new InvalidArgumentException("Unsupported file extension: $extension");
     }
+    $result = $parsers[$extension]($filePath);
     if (!is_array($result)) {
         throw new RuntimeException("Parsed data is not an array.");
     }
-    return $parser($filePath);
+    return $result;
 }
