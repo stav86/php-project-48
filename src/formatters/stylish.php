@@ -13,10 +13,6 @@ const DEPTH = 1;
 
 function getStylish(array $diff, $root = true): string
 {
-    if (!is_array($diff)) {
-        throw new InvalidArgumentException("Format not correct data. Need 'array'");
-    }
-
     $stylishFormat = getStylishFormat($diff, $root, DEPTH);
     return getBraces($stylishFormat, $root);
 }

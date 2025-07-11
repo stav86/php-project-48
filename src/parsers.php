@@ -3,6 +3,7 @@
 namespace GenDiff\Src\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
+use InvalidArgumentException;
 
 const JSON = 'json';
 const YAML = 'yaml';

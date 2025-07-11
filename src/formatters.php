@@ -2,6 +2,8 @@
 
 namespace GenDiff\Src\Formatters;
 
+use InvalidArgumentException;
+
 const PLAIN = 'plain';
 const JSON = 'json';
 const STYLISH = 'stylish';

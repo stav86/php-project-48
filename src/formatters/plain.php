@@ -4,10 +4,6 @@ namespace GenDiff\Src\Formatters\Plain;
 
 function getPlain(array $diff): string
 {
-    if (!is_array($diff)) {
-        throw new InvalidArgumentException("Format not correct data. Need 'array'");
-    }
-
     $plainFormat = getPlainFormat($diff);
     return implode("\n", $plainFormat);
 }

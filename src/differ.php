@@ -2,6 +2,8 @@
 
 namespace Differ\Differ;
 
+use InvalidArgumentException;
+
 use function Funct\Collection\sortBy;
 use function GenDiff\Src\Parsers\parseData;
 use function GenDiff\Src\Formatters\getFormatters;
@@ -19,17 +21,6 @@ function genDiff(
 ): string {
     $extensionFile1 = getExtension($toPathFile1);
     $extensionFile2 = getExtension($toPathFile2);
-
-    $supportedExtension = ['yaml', 'yml', 'json'];
-    if (
-        !in_array($extensionFile1, $supportedExtension, true) ||
-        !in_array($extensionFile2, $supportedExtension, true)
-    ) {
-        throw new InvalidArgumentException(
-            "Unsupported format: '$format'. Supported formats are: " . implode(', ', $supportedExtension)
-        );
-    }
-
     $parseFile1 = parseData($extensionFile1, $toPathFile1);
     $parseFile2 = parseData($extensionFile2, $toPathFile2);
     $buildDiff = getDiff($parseFile1, $parseFile2);
@@ -43,21 +34,41 @@ function getDiff(array $data1, array $data2): array
     $sortedKeys = sortBy($keys, fn($key) => $key);
     return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
-            return array_merge($result, [$key => ['status' => ADD, 'value' => $data2[$key]]]);
+            return array_merge(
+                $result,
+                [$key => ['status' => ADD,
+                'value' => $data2[$key]]]
+            );
         } elseif (!array_key_exists($key, $data2)) {
-            return array_merge($result, [$key => ['status' => REMOVE, 'value' => $data1[$key]]]);
+            return array_merge(
+                $result,
+                [$key => ['status' => REMOVE,
+                'value' => $data1[$key]]]
+            );
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            return array_merge($result, [$key => ['status' => NESTED, 'children' => getDiff($data1[$key], $data2[$key])]]);
+            return array_merge(
+                $result,
+                [
+                $key => ['status' => NESTED,
+                'children' => getDiff($data1[$key], $data2[$key])]]
+            );
         } elseif ($data1[$key] !== $data2[$key]) {
-            return array_merge($result, [$key => [
+            return array_merge(
+                $result,
+                [
+                    $key => [
                 'status' => CHANGED,
                 'old_value' => $data1[$key],
                 'new_value' => $data2[$key],
-            ]]);
+                        ]]
+            );
         } else {
-            return array_merge($result, [$key => ['status' => UNCHANGED, 'value' => $data1[$key]]]);
+            return array_merge(
+                $result,
+                [$key => ['status' => UNCHANGED,
+                'value' => $data1[$key]]]
+            );
         }
-        return $result;
     }, []);
 }
 
