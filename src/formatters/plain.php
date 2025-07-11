@@ -20,6 +20,7 @@ function formatValue($val)
         $val === false => 'false',
         $val === true => 'true',
         is_string($val) => "'$val'",
+        is_int($val) => $val,
         default => '[complex value]',
     };
 }
