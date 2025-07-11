@@ -26,18 +26,11 @@ class GenDiffTest extends TestCase
         $file5 = $this->getFixtureFullPath('file5.yaml');
         $file6 = $this->getFixtureFullPath('file6.yaml');
 
-        $data1 = json_decode(file_get_contents($file1), true);
-        $data2 = json_decode(file_get_contents($file2), true);
-        $data3 = Yaml::parse(file_get_contents($file3));
-        $data4 = Yaml::parse(file_get_contents($file4));
-        $data5 = Yaml::parse(file_get_contents($file5));
-        $data6 = Yaml::parse(file_get_contents($file6));
-
-        $this->stylishDiff1 = getStylish(genDiff($data1, $data2));
-        $this->stylishDiff2 = getStylish(genDiff($data3, $data4));
-        $this->stylishDiff3 = getStylish(genDiff($data5, $data6));
-        $this->plainDiff4 = getPlain(gendiff($data5, $data6));
-        $this->jsonDiff5 = getJson(gendiff($data5, $data6));
+        $this->stylishDiff1 = genDiff($file1, $file2);
+        $this->stylishDiff2 = genDiff($file3, $file4);
+        $this->stylishDiff3 = genDiff($file5, $file6, $format = 'stylish');
+        $this->plainDiff4 = gendiff($file5, $file6, $format = 'plain');
+        $this->jsonDiff5 = gendiff($file5, $file6, $format = 'json');
     }
 
     private function getFixtureFullPath($fixtureName)

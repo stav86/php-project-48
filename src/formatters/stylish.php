@@ -11,7 +11,7 @@ const OPEN_BRACE = ': {';
 const COLON = ': ';
 const DEPTH = 1;
 
-function getStylish(array $diff, int $depth = DEPTH, bool $root = true): string
+function getStylish($diff, int $depth = DEPTH, bool $root = true): string
 {
     $indent = getIndent($depth);
     $result = [];

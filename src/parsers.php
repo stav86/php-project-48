@@ -4,45 +4,11 @@ namespace GenDiff\Src\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 
-function parseData($input)
+function parseData($filePath, $toPathFile)
 {
-    if (file_exists($input)) {
-        $extension = pathinfo($input, PATHINFO_EXTENSION);
-        $data = file_get_contents($input);
-    } else {
-        $data = $input;
-        $extension = 'json';
+    if ($filePath === 'json') {
+        return json_decode(file_get_contents($toPathFile), true);
+    } elseif ($filePath === 'yaml' || $filePath === 'yml') {
+        return Yaml::parse(file_get_contents($toPathFile));
     }
-    $parsers = [
-        'json' => function ($data) {
-            if (!is_string($data)) {
-                throw new RuntimeException("Expected string for JSON decoding.");
-            }
-            $decodedData = json_decode($data, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new RuntimeException("JSON decode error: " . json_last_error_msg());
-            }
-            return $decodedData;
-        },
-        'yaml' => function ($data) {
-            if (!is_string($data)) {
-                throw new RuntimeException("Expected string for YAML parsing.");
-            }
-            return Yaml::parse($data);
-        },
-        'yml' => function ($data) {
-            if (!is_string($data)) {
-                throw new RuntimeException("Expected string for YAML parsing.");
-            }
-            return Yaml::parse($data);
-        },
-    ];
-    if (!array_key_exists($extension, $parsers)) {
-        return [$data];
-    }
-    $result = $parsers[$extension]($data);
-    if (!is_array($result)) {
-        return [$result];
-    }
-    return $result;
 }

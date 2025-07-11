@@ -24,18 +24,10 @@ DOC;
 
 $args = Docopt::handle($doc, array('version'=>'1.0.0'));
 
-try {
-    $firstFileData = GenDiff\Src\Parsers\parseData($args['<firstFile>']);
-    $secondFileData = GenDiff\Src\Parsers\parseData($args['<secondFile>']);
-} catch (RuntimeException $e) {
-    echo "Error parsing files: " . $e->getMessage() . PHP_EOL;
-    exit(1);
-}
-$format = $args['--format'] ?? 'stylish';
+$firstFile = $args['<firstFile>'];
+$secondFile = $args['<secondFile>'];
+$format = $args['--format'];
 
-if (!is_array($firstFileData) || !is_array($secondFileData)) {
-    throw new RuntimeException("One of the parsed data is not an array.");
-}
-$result = Differ\Differ\genDiff($firstFileData, $secondFileData, $format);
+$result = Differ\Differ\genDiff($firstFile, $secondFile , $format);
 
-print_r(GenDiff\Src\Formatters\getFormatters($result, $format));
+print_r($result);

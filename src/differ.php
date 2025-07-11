@@ -4,17 +4,25 @@ namespace Differ\Differ;
 
 use function Funct\Collection\sortBy;
 use function GenDiff\Src\Parsers\parseData;
+use function GenDiff\Src\Formatters\getFormatters;
 
-const STYLISH = 'stylish';
-
-function genDiff($data1, $data2, $format = STYLISH): array
+function genDiff(string $toPathFile1, string $toPathFile2, $format = 'stylish'): string
 {
-    if (!is_array($data1)) {
-        $data1 = parseData($data1);
-    }
-    if (!is_array($data2)) {
-        $data2 = parseData($data2);
-    }
+    $extensionFile1 = getExtension($toPathFile1);
+    $extensionFile2 = getExtension($toPathFile2);
+    
+    $parseFile1 = parseData($extensionFile1, $toPathFile1);
+    $parseFile2 = parseData($extensionFile2, $toPathFile2);
+    
+    $buildDiff = getDiff($parseFile1, $parseFile2);
+
+    $formatDiff = getFormatters($buildDiff, $format);
+
+    return $formatDiff;
+}
+
+function getDiff($data1, $data2)
+{
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
     return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
@@ -23,7 +31,7 @@ function genDiff($data1, $data2, $format = STYLISH): array
         } elseif (!array_key_exists($key, $data2)) {
             $result[$key] = ['status' => 'removed', 'value' => $data1[$key]];
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            $result[$key] = ['status' => 'nested', 'children' => genDiff($data1[$key], $data2[$key])];
+            $result[$key] = ['status' => 'nested', 'children' => getDiff($data1[$key], $data2[$key])];
         } elseif ($data1[$key] !== $data2[$key]) {
             $result[$key] = [
                 'status' => 'changed',
@@ -35,4 +43,9 @@ function genDiff($data1, $data2, $format = STYLISH): array
         }
         return $result;
     }, []);
+}
+
+function getExtension($toPathFile)
+{
+    return pathinfo($toPathFile, PATHINFO_EXTENSION);
 }

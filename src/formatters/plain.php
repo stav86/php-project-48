@@ -4,7 +4,7 @@ namespace GenDiff\Src\Formatters\Plain;
 
 const PREFIX = '';
 
-function getPlain(array $diff, $prefix = PREFIX)
+function getPlain($diff, $prefix = PREFIX)
 {
     $result = [];
     foreach ($diff as $key => $item) {
