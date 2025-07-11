@@ -4,6 +4,7 @@ namespace GenDiff\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
+
 use function Differ\Differ\genDiff;
 use function GenDiff\Src\Formatters\Stylish\getStylish;
 use function GenDiff\Src\Formatters\Plain\getPlain;
@@ -38,8 +39,7 @@ class GenDiffTest extends TestCase
         $file = [__DIR__, 'fixtures', $fixtureName];
         return realpath(implode('/', $file));
     }
-
-   public function testStylishDiff1()
+    public function testStylishDiff1()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult1'));
         $this->assertSame(trim($expected), trim($this->stylishDiff1));
