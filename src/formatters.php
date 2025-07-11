@@ -2,19 +2,29 @@
 
 namespace GenDiff\Src\Formatters;
 
-function getFormatters(array $result, string $format)
+const PLAIN = 'plain';
+const JSON = 'json';
+const STYLISH = 'stylish';
+
+function getFormatters(array $result, string $format): string
 {
-    $formatters = [
-        'plain' => function ($formatter) {
-            return plain\getPlain($formatter);
-        },
-        'json' => function ($formatter) {
-            return json\getJson($formatter);
-        },
-        'stylish' => function ($formatter) {
-            return stylish\getStylish($formatter);
-        },
-    ];
-    return isset($formatters[$format]) ? $formatters[$format]($result) :
-        throw new InvalidArgumentException("Unsupported file extension: $format");
+    return match ($format) {
+        PLAIN => getPlainFormat($result),
+        JSON => getJsonFormat($result),
+        STYLISH => getStylishFormat($result),
+        default => throw new InvalidArgumentException("Unknown format: '$format'"),
+    };
+}
+
+function getPlainFormat($formatData)
+{
+    return plain\getPlain($formatData);
+}
+function getJsonFormat($formatData)
+{
+    return json\getJson($formatData);
+}
+function getStylishFormat($formatData)
+{
+    return stylish\getStylish($formatData);
 }

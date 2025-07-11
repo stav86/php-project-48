@@ -11,11 +11,66 @@ const OPEN_BRACE = ': {';
 const COLON = ': ';
 const DEPTH = 1;
 
-function getStylish($diff, int $depth = DEPTH, bool $root = true): string
+function getStylish(array $diff, $root = true): string
+{
+    if (!is_array($diff)) {
+        throw new InvalidArgumentException("Format not correct data. Need 'array'");
+    }
+
+    $stylishFormat = getStylishFormat($diff, $root, DEPTH);
+    return getBraces($stylishFormat, $root);
+}
+
+function formatValue($value, int $depth = DEPTH): string
+{
+    if (is_array($value)) {
+        $indent = getIndent($depth + 1);
+        $closingIndent = getIndent($depth);
+        $items = array_map(function ($key) use ($value, $indent, $depth) {
+            $formattedValue = formatValue($value[$key], $depth + 1);
+            return "$indent  $key: $formattedValue";
+        }, array_keys($value));
+        return sprintf(
+            '%s%s%s',
+            "{\n",
+            implode("\n", $items),
+            "\n{$closingIndent}  }",
+        );
+    }
+
+    return match ($value) {
+        false => 'false',
+        true => 'true',
+        null => 'null',
+        default => $value,
+    };
+}
+
+function getIndent(int $depth = DEPTH, int $spacesPerLevel = SPACES_PER_LEVEL): string
+{
+    $repSymbol = ' ';
+    return str_repeat($repSymbol, $depth * $spacesPerLevel - 2);
+}
+
+function getBraces($val, $root): string
+{
+    if ($root) {
+        return sprintf(
+            "%s%s%s",
+            "{\n",
+            implode("\n", $val),
+            "\n}\n"
+        );
+    } else {
+        return implode("\n", $val);
+    }
+}
+
+function getStylishFormat(array $diff, $root = true, int $depth = DEPTH): array
 {
     $indent = getIndent($depth);
-    $result = [];
-    foreach ($diff as $key => $item) {
+    return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $indent, $root, $depth) {
+        $item = $diff[$key];
         switch ($item['status']) {
             case 'added':
                 $result[] = sprintf(
@@ -73,10 +128,8 @@ function getStylish($diff, int $depth = DEPTH, bool $root = true): string
                     $key,
                     OPEN_BRACE,
                 );
-                $result[] = sprintf(
-                    '%s',
-                    getStylish($item['children'], $depth + 1, false),
-                );
+                $nestedResult = getStylishFormat($item['children'], false, $depth + 1);
+                $result[] = implode("\n", $nestedResult);
                 $result[] = sprintf(
                     '%s%s',
                     $indent,
@@ -86,48 +139,6 @@ function getStylish($diff, int $depth = DEPTH, bool $root = true): string
             default:
                 throw new \InvalidArgumentException("Unknown status '{$item['status']}'");
         }
-    }
-    if ($root) {
-        return sprintf(
-            '%s%s%s',
-            "{\n",
-            implode("\n", $result),
-            "\n}\n",
-        );
-    } else {
-        return implode("\n", $result);
-    }
-}
-
-function formatValue($value, int $depth = DEPTH): string
-{
-    if (is_array($value)) {
-        $indent = getIndent($depth + 1);
-        $closingIndent = getIndent($depth);
-        $items = array_map(function ($key) use ($value, $indent, $depth) {
-            $formattedValue = formatValue($value[$key], $depth + 1);
-            return "{$indent}  {$key}: {$formattedValue}";
-        }, array_keys($value));
-        return sprintf(
-            '%s%s%s',
-            "{\n",
-            implode("\n", $items),
-            "\n{$closingIndent}  }",
-        );
-    }
-
-    if ($value === false) {
-        return 'false';
-    } elseif ($value === true) {
-        return 'true';
-    } elseif ($value === null) {
-        return 'null';
-    } else {
-        return $value;
-    }
-}
-
-function getIndent(int $depth = DEPTH, int $spacesPerLevel = SPACES_PER_LEVEL)
-{
-    return str_repeat(' ', $depth * $spacesPerLevel - 2);
+        return $result;
+    }, []);
 }

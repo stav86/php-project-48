@@ -6,10 +6,38 @@ use function Funct\Collection\sortBy;
 use function GenDiff\Src\Parsers\parseData;
 use function GenDiff\Src\Formatters\getFormatters;
 
-function genDiff(string $toPathFile1, string $toPathFile2, $format = 'stylish'): string
-{
+const ADD = 'added';
+const REMOVE = 'removed';
+const UNCHANGED = 'unchanged';
+const NESTED = 'nested';
+const CHANGED = 'changed';
+
+function genDiff(
+    string $toPathFile1,
+    string $toPathFile2,
+    string $format = 'stylish'
+): string {
+    if (!is_string($toPathFile1) || !is_string($toPathFile2)) {
+        throw new InvalidArgumentException('String required');
+    }
+
+    if (!file_exists($toPathFile1) || !file_exists($toPathFile2)) {
+        throw new InvalidArgumentException('One or both files do not exist.');
+    }
+
     $extensionFile1 = getExtension($toPathFile1);
     $extensionFile2 = getExtension($toPathFile2);
+
+    $supportedExtension = ['yaml', 'yml', 'json'];
+    if (
+        !in_array($extensionFile1, $supportedExtension, true) ||
+        !in_array($extensionFile2, $supportedExtension, true)
+    ) {
+        throw new InvalidArgumentException(
+            "Unsupported format: '$format'. Supported formats are: " . implode(', ', $supportedExtension)
+        );
+    }
+
     $parseFile1 = parseData($extensionFile1, $toPathFile1);
     $parseFile2 = parseData($extensionFile2, $toPathFile2);
     $buildDiff = getDiff($parseFile1, $parseFile2);
@@ -17,31 +45,31 @@ function genDiff(string $toPathFile1, string $toPathFile2, $format = 'stylish'):
     return $formatDiff;
 }
 
-function getDiff($data1, $data2)
+function getDiff(array $data1, array $data2): array
 {
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sortBy($keys, fn($key) => $key);
     return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
-            $result[$key] = ['status' => 'added', 'value' => $data2[$key]];
+            $result[$key] = ['status' => ADD, 'value' => $data2[$key]];
         } elseif (!array_key_exists($key, $data2)) {
-            $result[$key] = ['status' => 'removed', 'value' => $data1[$key]];
+            $result[$key] = ['status' => REMOVE, 'value' => $data1[$key]];
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            $result[$key] = ['status' => 'nested', 'children' => getDiff($data1[$key], $data2[$key])];
+            $result[$key] = ['status' => NESTED, 'children' => getDiff($data1[$key], $data2[$key])];
         } elseif ($data1[$key] !== $data2[$key]) {
             $result[$key] = [
-                'status' => 'changed',
+                'status' => CHANGED,
                 'old_value' => $data1[$key],
                 'new_value' => $data2[$key],
             ];
         } else {
-            $result[$key] = ['status' => 'unchanged', 'value' => $data1[$key]];
+            $result[$key] = ['status' => UNCHANGED, 'value' => $data1[$key]];
         }
         return $result;
     }, []);
 }
 
-function getExtension($toPathFile)
+function getExtension(string $toPathFile): string
 {
     return pathinfo($toPathFile, PATHINFO_EXTENSION);
 }

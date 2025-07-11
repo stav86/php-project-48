@@ -2,13 +2,33 @@
 
 namespace GenDiff\Src\Formatters\Plain;
 
-const PREFIX = '';
-
-function getPlain($diff, $prefix = PREFIX)
+function getPlain(array $diff): string
 {
-    $result = [];
-    foreach ($diff as $key => $item) {
+    if (!is_array($diff)) {
+        throw new InvalidArgumentException("Format not correct data. Need 'array'");
+    }
+
+    $plainFormat = getPlainFormat($diff);
+    return implode("\n", $plainFormat);
+}
+
+
+function formatValue($val)
+{
+    return match (true) {
+        $val === null => 'null',
+        $val === false => 'false',
+        $val === true => 'true',
+        is_string($val) => "'$val'",
+        default => '[complex value]',
+    };
+}
+
+function getPlainFormat(array $diff, string $prefix = ''): array
+{
+    return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $prefix) {
         $fullPath = $prefix ? "$prefix.$key" : $key;
+        $item = $diff[$key];
         switch ($item['status']) {
             case 'added':
                 $value = formatValue($item['value']);
@@ -23,31 +43,14 @@ function getPlain($diff, $prefix = PREFIX)
                 $result[] = "Property '$fullPath' was updated. From $oldValue to $newValue";
                 break;
             case 'nested':
-                $result[] = getPlain($item['children'], $fullPath);
+                $nestedResult = getPlainFormat($item['children'], $fullPath);
+                $result[] = implode("\n", $nestedResult);
                 break;
             case 'unchanged':
                 break;
             default:
                 throw new \InvalidArgumentException("Unknown status '{$item['status']}' for property '$fullPath'");
         }
-    }
-    return implode("\n", $result);
-}
-
-
-function formatValue($val)
-{
-    if ($val === null) {
-        return 'null';
-    } elseif ($val === false) {
-        return 'false';
-    } elseif ($val === true) {
-        return 'true';
-    } elseif (is_string($val)) {
-        return "'$val'";
-    } elseif (is_int($val)) {
-        return $val;
-    } else {
-        return '[complex value]';
-    }
+        return $result;
+    }, []);
 }
