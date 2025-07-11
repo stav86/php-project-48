@@ -10,14 +10,10 @@ function genDiff(string $toPathFile1, string $toPathFile2, $format = 'stylish'):
 {
     $extensionFile1 = getExtension($toPathFile1);
     $extensionFile2 = getExtension($toPathFile2);
-    
     $parseFile1 = parseData($extensionFile1, $toPathFile1);
     $parseFile2 = parseData($extensionFile2, $toPathFile2);
-    
     $buildDiff = getDiff($parseFile1, $parseFile2);
-
     $formatDiff = getFormatters($buildDiff, $format);
-
     return $formatDiff;
 }
 
