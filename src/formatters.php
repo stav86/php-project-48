@@ -18,15 +18,15 @@ function getFormatters(array $result, string $format): string
     };
 }
 
-function getPlainFormat($formatData)
+function getPlainFormat(array $formatData): string
 {
     return plain\getPlain($formatData);
 }
-function getJsonFormat($formatData)
+function getJsonFormat(array $formatData): string
 {
     return json\getJson($formatData);
 }
-function getStylishFormat($formatData)
+function getStylishFormat(array $formatData): string
 {
     return stylish\getStylish($formatData);
 }

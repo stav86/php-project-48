@@ -4,5 +4,5 @@ namespace GenDiff\Src\Formatters\Json;
 
 function getJson(array $diff): string
 {
-    return json_encode($diff);
+    return json_encode($diff, JSON_THROW_ON_ERROR);
 }

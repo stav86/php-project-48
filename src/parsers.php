@@ -19,12 +19,12 @@ function parseData(string $extension, string $toPathFile): array
     };
 }
 
-function parseJson($pathFile)
+function parseJson(string $pathFile): array
 {
-    return json_decode(file_get_contents($pathFile), true);
+    return json_decode(file_get_contents($pathFile, JSON_THROW_ON_ERROR), true);
 }
 
-function parseYaml($pathFile)
+function parseYaml(string $pathFile): array
 {
-    return Yaml::parse(file_get_contents($pathFile));
+    return Yaml::parse(file_get_contents($pathFile, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE));
 }
