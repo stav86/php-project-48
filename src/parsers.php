@@ -19,20 +19,20 @@ function parseData(string $extension, string $toPathFile): array
     };
 }
 
-function parseJson(string $pathFile): array
+function parseJson(string $pathFile): mixed
 {
     $fileContent = file_get_contents($pathFile);
-    if ($fileContent === false) {
-        throw new InvalidArgumentException("Unknown extension: '$pathFile'");
+    if ($fileContent === false || !$fileContent) {
+        throw new InvalidArgumentException("Unknown data: '$pathFile'");
     }
     return json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 }
 
-function parseYaml(string $pathFile): array
+function parseYaml(string $pathFile): mixed
 {
     $fileContent = file_get_contents($pathFile);
-    if ($fileContent === false) {
-        throw new InvalidArgumentException("Unknown extension: '$pathFile'");
+    if ($fileContent === false || !$fileContent) {
+        throw new InvalidArgumentException("Unknown data: '$pathFile'");
     }
     return Yaml::parse($fileContent, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }

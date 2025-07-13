@@ -4,11 +4,19 @@ namespace GenDiff\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
+use InvalidArgumentException;
 
 use function Differ\Differ\genDiff;
-use function GenDiff\Src\Formatters\Stylish\getStylish;
-use function GenDiff\Src\Formatters\Plain\getPlain;
-use function GenDiff\Src\Formatters\Json\getJson;
+use function GenDiff\Src\Formatters\{
+    Stylish\getStylish,
+    Plain\getPlain,
+    Json\getJson,
+};
+use function GenDiff\Src\Parsers\{
+    parseData,
+    parseJson,
+    parseYaml,
+};
 
 class GenDiffTest extends TestCase
 {
@@ -70,12 +78,30 @@ class GenDiffTest extends TestCase
         $this->assertSame($expected, $this->jsonDiff5);
     }
 
-    public function testGetStylish1()
+    public function testParsers1()
     {
-        $diff = [];
-        $result = getStylish($diff);
-        $expected = "{\n\n}\n";
-        $this->assertSame($expected, $result);
+        $extension = 'txt';
+        $toPathFile = 'filesForCompare/file1.txt';
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown extension: '$extension'");
+        parseData($extension, $toPathFile);
+    }
+    
+    public function testParsers2()
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.json');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown data: '$tempFile'");
+        parseJson($tempFile);
+        unlink($tempFile);
     }
 
+    public function testParsers3()
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.yml');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown data: '$tempFile'");
+        parseYaml($tempFile);
+        unlink($tempFile);
+    }
 }
