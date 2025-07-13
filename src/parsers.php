@@ -21,7 +21,7 @@ function parseData(string $extension, string $toPathFile): array
 
 function parseJson(string $pathFile): mixed
 {
-    $fileContent = file_get_contents($pathFile);
+    $fileContent = @file_get_contents($pathFile);
     if ($fileContent === false || !$fileContent) {
         throw new InvalidArgumentException("Unknown data: '$pathFile'");
     }

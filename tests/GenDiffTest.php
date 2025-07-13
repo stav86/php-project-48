@@ -86,7 +86,7 @@ class GenDiffTest extends TestCase
         $this->expectExceptionMessage("Unknown extension: '$extension'");
         parseData($extension, $toPathFile);
     }
-    
+
     public function testParsers2()
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.json');
@@ -97,6 +97,14 @@ class GenDiffTest extends TestCase
     }
 
     public function testParsers3()
+    {
+        $notExistedFile = '/fixtures/file1.txt';
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage("Unknown data: '$notExistedFile'");
+        parseJson($notExistedFile);
+    }
+
+    public function testParsers4()
     {
         $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.yml');
         $this->expectException(InvalidArgumentException::class);
