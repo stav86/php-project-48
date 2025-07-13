@@ -21,10 +21,12 @@ function parseData(string $extension, string $toPathFile): array
 
 function parseJson(string $pathFile): array
 {
-    return json_decode(file_get_contents($pathFile, JSON_THROW_ON_ERROR), true);
+    $fileContent = file_get_contents($pathFile);
+    return json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 }
 
 function parseYaml(string $pathFile): array
 {
-    return Yaml::parse(file_get_contents($pathFile, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE));
+    $fileContent = file_get_contents($pathFile);
+    return Yaml::parse($fileContent, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }
