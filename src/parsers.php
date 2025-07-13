@@ -22,11 +22,17 @@ function parseData(string $extension, string $toPathFile): array
 function parseJson(string $pathFile): array
 {
     $fileContent = file_get_contents($pathFile);
+    if ($fileContent === false) {
+        throw new InvalidArgumentException("Unknown extension: '$extension'");
+    }
     return json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 }
 
 function parseYaml(string $pathFile): array
 {
     $fileContent = file_get_contents($pathFile);
+    if ($fileContent === false) {
+        throw new InvalidArgumentException("Unknown extension: '$extension'");
+    }
     return Yaml::parse($fileContent, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }
