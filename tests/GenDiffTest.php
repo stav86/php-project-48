@@ -77,5 +77,4 @@ class GenDiffTest extends TestCase
         $this->assertSame($expected, getStylish($diff));
     }
 
-    public function 
 }
