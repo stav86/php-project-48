@@ -39,29 +39,43 @@ class GenDiffTest extends TestCase
         $file = [__DIR__, 'fixtures', $fixtureName];
         return realpath(implode('/', $file));
     }
+
     public function testStylishDiff1()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult1'));
         $this->assertSame($expected, $this->stylishDiff1);
     }
+
     public function testStylishDiff2()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult2'));
         $this->assertSame($expected, $this->stylishDiff2);
     }
+
     public function testStylishDiff3()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult3'));
         $this->assertSame($expected, $this->stylishDiff3);
     }
+
     public function testPlainDiff4()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult4'));
         $this->assertSame($expected, $this->plainDiff4);
     }
+
     public function testJsonDiff5()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult5'));
         $this->assertSame($expected, $this->jsonDiff5);
     }
+
+    public function testGetStylish1()
+    {
+        $diff = [];
+        $expected = "{\n\n}\n";
+        $this->assertSame($expected, getStylish($diff));
+    }
+
+    public function 
 }
