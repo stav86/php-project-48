@@ -11,7 +11,7 @@ const COLON = ': ';
 
 function getStylish(array $diff, bool $root = true): string
 {
-    $stylishFormat = getStylishFormat($diff, $root, $depth = 1);
+    $stylishFormat = getStylishFormat($diff, $root);
     return getBraces($stylishFormat, $root);
 }
 
