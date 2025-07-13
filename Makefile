@@ -9,5 +9,5 @@ autoload:
 install:
 	composer install
 
-test-coverage:
+test:
 	./vendor/bin/phpunit --bootstrap vendor/autoload.php tests/
