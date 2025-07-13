@@ -67,75 +67,83 @@ function getStylishFormat(array $diff, $root = true, int $depth = 1): array
         $item = $diff[$key];
         switch ($item['status']) {
             case 'added':
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s%s',
-                    $indent,
-                    ADDED_PREFIX,
-                    $key,
-                    COLON,
-                    formatValue($item['value'], $depth),
-                )];
+                return array_merge(
+                    $result,
+                    [sprintf(
+                        '%s%s%s%s%s',
+                        $indent,
+                        ADDED_PREFIX,
+                        $key,
+                        COLON,
+                        formatValue($item['value'], $depth),
+                    )]
+                );
                 break;
             case 'removed':
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s%s',
-                    $indent,
-                    REMOVED_PREFIX,
-                    $key,
-                    COLON,
-                    formatValue($item['value'], $depth),
-                )];
+                return array_merge(
+                    $result,
+                    [sprintf(
+                        '%s%s%s%s%s',
+                        $indent,
+                        REMOVED_PREFIX,
+                        $key,
+                        COLON,
+                        formatValue($item['value'], $depth),
+                    )]
+                );
                 break;
             case 'changed':
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s%s',
-                    $indent,
-                    REMOVED_PREFIX,
-                    $key,
-                    COLON,
-                    formatValue($item['old_value'], $depth),
-                )];
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s%s',
-                    $indent,
-                    ADDED_PREFIX,
-                    $key,
-                    COLON,
-                    formatValue($item['new_value'], $depth),
-                )];
+                return array_merge(
+                    $result,
+                    [sprintf(
+                        '%s%s%s%s%s',
+                        $indent,
+                        REMOVED_PREFIX,
+                        $key,
+                        COLON,
+                        formatValue($item['old_value'], $depth),
+                    ),
+                    sprintf(
+                        '%s%s%s%s%s',
+                        $indent,
+                        ADDED_PREFIX,
+                        $key,
+                        COLON,
+                        formatValue($item['new_value'], $depth),
+                    )]
+                );
                 break;
             case 'unchanged':
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s%s',
-                    $indent,
-                    NESTED_PREFIX,
-                    $key,
-                    COLON,
-                    formatValue($item['value'], $depth)
-                )];
+                return array_merge(
+                    $result,
+                    [sprintf(
+                        '%s%s%s%s%s',
+                        $indent,
+                        NESTED_PREFIX,
+                        $key,
+                        COLON,
+                        formatValue($item['value'], $depth)
+                    )]
+                );
                 break;
             case 'nested':
-                $result = [...$result,
-                sprintf(
-                    '%s%s%s%s',
-                    $indent,
-                    NESTED_PREFIX,
-                    $key,
-                    OPEN_BRACE,
-                )];
                 $nestedResult = getStylishFormat($item['children'], false, $depth + 1);
-                $result = [...$result, implode("\n", $nestedResult)];
-                $result = [...$result,
-                sprintf(
-                    '%s%s',
-                    $indent,
-                    CLOSING_BRACE,
-                )];
+                return array_merge(
+                    $result,
+                    [sprintf(
+                        '%s%s%s%s',
+                        $indent,
+                        NESTED_PREFIX,
+                        $key,
+                        OPEN_BRACE,
+                    ),
+                    implode("\n", $nestedResult),
+                    sprintf(
+                        '%s%s',
+                        $indent,
+                        CLOSING_BRACE,
+                    )]
+                );
                 break;
             default:
                 throw new \InvalidArgumentException("Unknown status '{$item['status']}'");

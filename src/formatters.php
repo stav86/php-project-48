@@ -20,13 +20,13 @@ function getFormatters(array $result, string $format): string
 
 function getPlainFormat(array $formatData): string
 {
-    return plain\getPlain($formatData);
+    return Plain\getPlain($formatData);
 }
 function getJsonFormat(array $formatData): string
 {
-    return json\getJson($formatData);
+    return Json\getJson($formatData);
 }
 function getStylishFormat(array $formatData): string
 {
-    return stylish\getStylish($formatData);
+    return Stylish\getStylish($formatData);
 }
