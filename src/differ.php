@@ -24,8 +24,7 @@ function genDiff(
     $parseFile1 = parseData($extensionFile1, $toPathFile1);
     $parseFile2 = parseData($extensionFile2, $toPathFile2);
     $buildDiff = getDiff($parseFile1, $parseFile2);
-    $formatDiff = getFormatters($buildDiff, $format);
-    return $formatDiff;
+    return getFormatters($buildDiff, $format);
 }
 
 function getDiff(array $data1, array $data2): array

@@ -2,7 +2,8 @@
 [![Actions Status](https://github.com/stav86/php-project-48/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/stav86/php-project-48/actions)
 
 ### SonarQube
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=bugs)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48)
+
 
 # Project Difference Calculator
 
@@ -13,17 +14,23 @@ The difference calculator compares JSON and YAML files, with the ability to outp
 * Json
 
 ## System requirements
-* [PHP 8.3+](https://www.php.net/downloads.php)
+* [PHP ver.8.3+](https://www.php.net/downloads.php)
+* [Symfony Yaml ver.7+](https://symfony.com/doc/current/components/yaml.html)
+* [DocOpt ver.1+](https://docopt.org/)
 
 ## Clone the repository
 
 ```git@github.com:stav86/php-project-48.git```
 
 ## Install dependencies
-```composer install```
+```make install```
 
 ## Run tests
-```make test-coverage```
+```make test```
+
+## Run Lint
+
+```make lint```
 
 ## Background information
 ```gendiff -h```

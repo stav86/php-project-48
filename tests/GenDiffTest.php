@@ -29,9 +29,9 @@ class GenDiffTest extends TestCase
 
         $this->stylishDiff1 = genDiff($file1, $file2);
         $this->stylishDiff2 = genDiff($file3, $file4);
-        $this->stylishDiff3 = genDiff($file5, $file6, $format = 'stylish');
-        $this->plainDiff4 = gendiff($file5, $file6, $format = 'plain');
-        $this->jsonDiff5 = gendiff($file5, $file6, $format = 'json');
+        $this->stylishDiff3 = genDiff($file5, $file6, 'stylish');
+        $this->plainDiff4 = genDiff($file5, $file6, 'plain');
+        $this->jsonDiff5 = genDiff($file5, $file6, 'json');
     }
 
     private function getFixtureFullPath($fixtureName)
@@ -42,26 +42,26 @@ class GenDiffTest extends TestCase
     public function testStylishDiff1()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult1'));
-        $this->assertSame(trim($expected), trim($this->stylishDiff1));
+        $this->assertSame($expected, $this->stylishDiff1);
     }
     public function testStylishDiff2()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult2'));
-        $this->assertSame(trim($expected), trim($this->stylishDiff2));
+        $this->assertSame($expected, $this->stylishDiff2);
     }
     public function testStylishDiff3()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult3'));
-        $this->assertSame(trim($expected), trim($this->stylishDiff3));
+        $this->assertSame($expected, $this->stylishDiff3);
     }
     public function testPlainDiff4()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult4'));
-        $this->assertSame(trim($expected), trim($this->plainDiff4));
+        $this->assertSame($expected, $this->plainDiff4);
     }
     public function testJsonDiff5()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult5'));
-        $this->assertSame(trim($expected), trim($this->jsonDiff5));
+        $this->assertSame($expected, $this->jsonDiff5);
     }
 }
