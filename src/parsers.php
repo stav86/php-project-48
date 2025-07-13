@@ -31,10 +31,6 @@ function parseJson(string $pathFile): mixed
         throw new InvalidArgumentException("Unknown data: '$pathFile'");
     }
 
-    if (!$fileContent) {
-        throw new InvalidArgumentException("File: '$pathFile' empty");
-    }
-
     return json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 }
 
@@ -48,10 +44,6 @@ function parseYaml(string $pathFile): mixed
 
     if ($fileContent === false) {
         throw new InvalidArgumentException("Unknown data: '$pathFile'");
-    }
-
-    if (!$fileContent) {
-        throw new InvalidArgumentException("File: '$pathFile' empty");
     }
 
     return Yaml::parse($fileContent, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);

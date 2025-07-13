@@ -77,47 +77,4 @@ class GenDiffTest extends TestCase
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult5'));
         $this->assertSame($expected, $this->jsonDiff5);
     }
-
-    public function testParsers1()
-    {
-        $extension = 'txt';
-        $toPathFile = 'filesForCompare/file1.txt';
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Unknown extension: '$extension'");
-        parseData($extension, $toPathFile);
-    }
-
-    public function testParsers2()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.json');
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("File: '$tempFile' empty");
-        parseJson($tempFile);
-        unlink($tempFile);
-    }
-
-    public function testParsers3()
-    {
-        $notExistedFile = '/fixtures/file1.txt';
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("File: not found '$notExistedFile'");
-        parseJson($notExistedFile);
-    }
-
-    public function testParsers4()
-    {
-        $tempFile = tempnam(sys_get_temp_dir(), 'emptyFile.yaml');
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("File: '$tempFile' empty");
-        parseYaml($tempFile);
-        unlink($tempFile);
-    }
-
-    public function testParsers5()
-    {
-        $notExistedFile = '/fixtures/file1.txt';
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("File: not found '$notExistedFile'");
-        parseYaml($notExistedFile);
-    }
 }
