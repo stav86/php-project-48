@@ -18,6 +18,10 @@ use function GenDiff\Src\Parsers\{
     parseYaml,
 };
 
+/**
+ * @codeCoverageIgnore
+ */
+
 class GenDiffTest extends TestCase
 {
     private $stylishDiff1;

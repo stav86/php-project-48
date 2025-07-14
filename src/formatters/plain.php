@@ -28,16 +28,16 @@ function getPlainFormat(array $diff, string $prefix = ''): array
         $item = $diff[$key];
         if ($item['status'] === 'added') {
             $value = formatValue($item['value']);
-            $result = array_merge($result, ["Property '$fullPath' was added with value: $value"]);
+            return array_merge($result, ["Property '$fullPath' was added with value: $value"]);
         } elseif ($item['status'] === 'removed') {
-            $result = array_merge($result, ["Property '$fullPath' was removed"]);
+            return array_merge($result, ["Property '$fullPath' was removed"]);
         } elseif ($item['status'] === 'changed') {
             $oldValue = formatValue($item['old_value']);
             $newValue = formatValue($item['new_value']);
-            $result = array_merge($result, ["Property '$fullPath' was updated. From $oldValue to $newValue"]);
+            return array_merge($result, ["Property '$fullPath' was updated. From $oldValue to $newValue"]);
         } elseif ($item['status'] === 'nested') {
             $nestedResult = getPlainFormat($item['children'], $fullPath);
-            $result = array_merge($result, [implode("\n", $nestedResult)]);
+            return array_merge($result, [implode("\n", $nestedResult)]);
         }
         return $result;
     }, []);
@@ -46,4 +46,9 @@ function getPlainFormat(array $diff, string $prefix = ''): array
 function getFullPath(string $prefix, string $key): string
 {
     return ($prefix !== '') ? "$prefix.$key" : $key;
+}
+
+function getAddString()
+{
+    return array_merge($result, ["Property '$fullPath' was added with value: $value"]);
 }

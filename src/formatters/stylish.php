@@ -30,13 +30,13 @@ function getBraces(array $val, bool $root): string
     }
 }
 
-function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
+function getStylishFormat(array $diff, bool $root, int $depth = 1): array // @codeCoverageIgnore
 {
     $indent = getIndent($depth);
     return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $indent, $depth) {
         $item = $diff[$key];
         if ($item['status'] === 'added') {
-            $result = array_merge(
+            return array_merge(
                 $result,
                 [sprintf(
                     getSpecifier(SPECIFIER, 5),
@@ -48,7 +48,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 )]
             );
         } elseif ($item['status'] === 'removed') {
-            $result = array_merge(
+            return array_merge(
                 $result,
                 [sprintf(
                     getSpecifier(SPECIFIER, 5),
@@ -60,7 +60,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 )]
             );
         } elseif ($item['status'] === 'changed') {
-            $result = array_merge(
+            return array_merge(
                 $result,
                 [sprintf(
                     getSpecifier(SPECIFIER, 5),
@@ -80,7 +80,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 )]
             );
         } elseif ($item['status'] === 'unchanged') {
-            $result = array_merge(
+            return array_merge(
                 $result,
                 [sprintf(
                     getSpecifier(SPECIFIER, 5),
@@ -93,7 +93,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
             );
         } elseif ($item['status'] === 'nested') {
             $nestedResult = getStylishFormat($item['children'], false, $depth + 1);
-                $result = array_merge(
+                return array_merge(
                     $result,
                     [sprintf(
                         getSpecifier(SPECIFIER, 4),
