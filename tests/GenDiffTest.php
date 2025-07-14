@@ -2,8 +2,6 @@
 
 namespace GenDiff\Tests;
 
-require_once __DIR__ . '/../xdebug_filter.php';
-
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use InvalidArgumentException;
@@ -27,6 +25,7 @@ class GenDiffTest extends TestCase
     private $stylishDiff3;
     private $plainDiff4;
     private $jsonDiff5;
+    private $stylishDiff6;
 
     protected function setUp(): void
     {
@@ -36,47 +35,67 @@ class GenDiffTest extends TestCase
         $file4 = $this->getFixtureFullPath('file4.yaml');
         $file5 = $this->getFixtureFullPath('file5.yaml');
         $file6 = $this->getFixtureFullPath('file6.yaml');
+        $file7 = $this->getFixtureFullPath('file7.yml');
 
         $this->stylishDiff1 = genDiff($file1, $file2);
         $this->stylishDiff2 = genDiff($file3, $file4);
         $this->stylishDiff3 = genDiff($file5, $file6, 'stylish');
         $this->plainDiff4 = genDiff($file5, $file6, 'plain');
         $this->jsonDiff5 = genDiff($file5, $file6, 'json');
+        $this->stylishDiff6 = genDiff($file5, $file7);
     }
 
     private function getFixtureFullPath($fixtureName)
     {
         $file = [__DIR__, 'fixtures', $fixtureName];
-        return realpath(implode('/', $file));
+        $pathFile = realpath(implode('/', $file));
+        if($pathFile === false || !file_exists($pathFile))
+        {
+            throw new InvalidArgumentException("Fixture file not found: '$pathFile'");
+        }
+
+        return $pathFile;
     }
 
     public function testStylishDiff1()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult1'));
-        $this->assertSame($expected, $this->stylishDiff1);
+        $result = $this->stylishDiff1;
+        $this->assertSame($expected, $result);
     }
 
     public function testStylishDiff2()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult2'));
-        $this->assertSame($expected, $this->stylishDiff2);
+        $result = $this->stylishDiff2;
+        $this->assertSame($expected, $result);
     }
 
     public function testStylishDiff3()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult3'));
-        $this->assertSame($expected, $this->stylishDiff3);
+        $result = $this->stylishDiff3;
+        $this->assertSame($expected, $result);
     }
 
     public function testPlainDiff4()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult4'));
-        $this->assertSame($expected, $this->plainDiff4);
+        $result = $this->plainDiff4;
+        $this->assertSame($expected, $result);
     }
 
     public function testJsonDiff5()
     {
         $expected = file_get_contents($this->getFixtureFullPath('expectedResult5'));
-        $this->assertSame($expected, $this->jsonDiff5);
+        $result = $this->jsonDiff5;
+        $this->assertSame($expected, $result);
+    }
+
+    public function testStylishDiff6()
+    {
+        $expected = file_get_contents($this->getFixtureFullPath('expectedResult3'));
+        $result = $this->stylishDiff6;
+        $this->assertSame($expected, $result);
     }
 }
