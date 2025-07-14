@@ -49,8 +49,7 @@ class GenDiffTest extends TestCase
     {
         $file = [__DIR__, 'fixtures', $fixtureName];
         $pathFile = realpath(implode('/', $file));
-        if($pathFile === false || !file_exists($pathFile))
-        {
+        if ($pathFile === false || !file_exists($pathFile)) {
             throw new InvalidArgumentException("Fixture file not found: '$pathFile'");
         }
 
