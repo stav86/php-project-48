@@ -33,26 +33,26 @@ function getDiff(array $data1, array $data2): array
     $sortedKeys = sortBy($keys, fn($key) => $key);
     return array_reduce($sortedKeys, function ($result, $key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
-            return array_merge(
+            $result = array_merge(
                 $result,
                 [$key => ['status' => ADD,
                 'value' => $data2[$key]]]
             );
         } elseif (!array_key_exists($key, $data2)) {
-            return array_merge(
+            $result = array_merge(
                 $result,
                 [$key => ['status' => REMOVE,
                 'value' => $data1[$key]]]
             );
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            return array_merge(
+            $result = array_merge(
                 $result,
                 [
                 $key => ['status' => NESTED,
                 'children' => getDiff($data1[$key], $data2[$key])]]
             );
         } elseif ($data1[$key] !== $data2[$key]) {
-            return array_merge(
+            $result = array_merge(
                 $result,
                 [
                     $key => [
@@ -62,12 +62,13 @@ function getDiff(array $data1, array $data2): array
                         ]]
             );
         } else {
-            return array_merge(
+            $result = array_merge(
                 $result,
                 [$key => ['status' => UNCHANGED,
                 'value' => $data1[$key]]]
             );
         }
+        return $result;
     }, []);
 }
 

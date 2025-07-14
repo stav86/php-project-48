@@ -28,16 +28,16 @@ function getPlainFormat(array $diff, string $prefix = ''): array
         $item = $diff[$key];
         if ($item['status'] === 'added') {
             $value = formatValue($item['value']);
-            return array_merge($result, ["Property '$fullPath' was added with value: $value"]);
+            $result = array_merge($result, ["Property '$fullPath' was added with value: $value"]);
         } elseif ($item['status'] === 'removed') {
-            return array_merge($result, ["Property '$fullPath' was removed"]);
+            $result = array_merge($result, ["Property '$fullPath' was removed"]);
         } elseif ($item['status'] === 'changed') {
             $oldValue = formatValue($item['old_value']);
             $newValue = formatValue($item['new_value']);
-            return array_merge($result, ["Property '$fullPath' was updated. From $oldValue to $newValue"]);
+            $result = array_merge($result, ["Property '$fullPath' was updated. From $oldValue to $newValue"]);
         } elseif ($item['status'] === 'nested') {
             $nestedResult = getPlainFormat($item['children'], $fullPath);
-            return array_merge($result, [implode("\n", $nestedResult)]);
+            $result = array_merge($result, [implode("\n", $nestedResult)]);
         }
         return $result;
     }, []);
