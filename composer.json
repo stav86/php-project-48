@@ -13,8 +13,7 @@
             "src/formatters/stylish.php",
             "src/formatters/plain.php",
             "src/formatters/json.php",
-            "src/formatters.php",
-            "phpunit.xml"
+            "src/formatters.php"
         ]
     },
     "authors": [
