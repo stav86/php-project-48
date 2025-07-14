@@ -45,6 +45,5 @@ function getPlainFormat(array $diff, string $prefix = ''): array
 
 function getFullPath(string $prefix, string $key): string
 {
-    $fullPathKey = ($prefix !== '') ? "$prefix.$key" : $key;
-    return $fullPathKey;
+    return ($prefix !== '') ? "$prefix.$key" : $key;
 }
