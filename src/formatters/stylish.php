@@ -33,67 +33,82 @@ function getBraces(array $val, bool $root): string
 function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
 {
     $indent = getIndent($depth);
-    return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $indent, $root, $depth) {
+    return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $indent, $depth) {
         $item = $diff[$key];
         if ($item['status'] === 'added') {
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 5),
-                $indent,
-                ADDED_PREFIX,
-                $key,
-                COLON,
-                formatValue($item['value'], $depth)
+            $result = array_merge(
+                $result,
+                [sprintf(
+                    getSpecifier(SPECIFIER, 5),
+                    $indent,
+                    ADDED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth),
+                )]
             );
         } elseif ($item['status'] === 'removed') {
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 5),
-                $indent,
-                REMOVED_PREFIX,
-                $key,
-                COLON,
-                formatValue($item['value'], $depth)
+            $result = array_merge(
+                $result,
+                [sprintf(
+                    getSpecifier(SPECIFIER, 5),
+                    $indent,
+                    REMOVED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth),
+                )]
             );
         } elseif ($item['status'] === 'changed') {
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 5),
-                $indent,
-                REMOVED_PREFIX,
-                $key,
-                COLON,
-                formatValue($item['old_value'], $depth)
-            );
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 5),
-                $indent,
-                ADDED_PREFIX,
-                $key,
-                COLON,
-                formatValue($item['new_value'], $depth)
+            $result = array_merge(
+                $result,
+                [sprintf(
+                    getSpecifier(SPECIFIER, 5),
+                    $indent,
+                    REMOVED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['old_value'], $depth),
+                ),
+                sprintf(
+                    getSpecifier(SPECIFIER, 5),
+                    $indent,
+                    ADDED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['new_value'], $depth),
+                )]
             );
         } elseif ($item['status'] === 'unchanged') {
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 5),
-                $indent,
-                NESTED_PREFIX,
-                $key,
-                COLON,
-                formatValue($item['value'], $depth)
+            $result = array_merge(
+                $result,
+                [sprintf(
+                    getSpecifier(SPECIFIER, 5),
+                    $indent,
+                    NESTED_PREFIX,
+                    $key,
+                    COLON,
+                    formatValue($item['value'], $depth)
+                )]
             );
         } elseif ($item['status'] === 'nested') {
             $nestedResult = getStylishFormat($item['children'], false, $depth + 1);
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 4),
-                $indent,
-                NESTED_PREFIX,
-                $key,
-                OPEN_BRACE
-            );
-            $result[] = implode("\n", $nestedResult);
-            $result[] = sprintf(
-                getSpecifier(SPECIFIER, 2),
-                $indent,
-                CLOSING_BRACE
-            );
+                $result = array_merge(
+                    $result,
+                    [sprintf(
+                        getSpecifier(SPECIFIER, 4),
+                        $indent,
+                        NESTED_PREFIX,
+                        $key,
+                        OPEN_BRACE,
+                    ),
+                    implode("\n", $nestedResult),
+                    sprintf(
+                        getSpecifier(SPECIFIER, 2),
+                        $indent,
+                        CLOSING_BRACE,
+                    )]
+                );
         }
         return $result;
     }, []);
