@@ -2,6 +2,8 @@
 
 namespace GenDiff\Tests;
 
+require_once __DIR__ . '/../xdebug_filter.php';
+
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use InvalidArgumentException;
