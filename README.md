@@ -3,11 +3,10 @@
 ### SonarQube
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=bugs)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=coverage)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=stav86_php-project-48&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=stav86_php-project-48)
 
+### <p style="text-align: center;">Project Difference Calculator</p>
 
-# Project Difference Calculator
-
-### Description
-The difference calculator compares JSON and YAML files, with the ability to output in three different formats: 
+### <p style="text-align: center;">Description</p>
+The difference calculator compares JSON, YAML, YML files, with the ability to output in three different formats: 
 * Stylish
 * Plain
 * Json
@@ -18,24 +17,26 @@ The difference calculator compares JSON and YAML files, with the ability to outp
 * [DocOpt ver.1+](https://docopt.org/)
 
 ## Clone the repository
-
 ```git@github.com:stav86/php-project-48.git```
 
 ## Install dependencies
 ```make install```
 
-## Run tests
-```make test```
-
 ## Run Lint
-
 ```make lint```
 
 ## Background information
 ```gendiff -h```
 
+## Run compare files
+```bin/gendiff path/to/file1.json path/to/file2.json```
 
-## Example of work
+Supported file formats:
+* YAML
+* YML
+* JSON
+
+## <p style="text-align: center;">Example of work</p>
 
 * **#1** - [Comparing Flat Files (JSON)](https://asciinema.org/a/OTwBrGlGAsOexMLsHKpgOWfNj)
 
