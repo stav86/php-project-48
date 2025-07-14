@@ -35,9 +35,8 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
     $indent = getIndent($depth);
     return array_reduce(array_keys($diff), function ($result, $key) use ($diff, $indent, $root, $depth) {
         $item = $diff[$key];
-        $formattedValue = [];
         if ($item['status'] === 'added') {
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 5),
                 $indent,
                 ADDED_PREFIX,
@@ -46,7 +45,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 formatValue($item['value'], $depth)
             );
         } elseif ($item['status'] === 'removed') {
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 5),
                 $indent,
                 REMOVED_PREFIX,
@@ -55,7 +54,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 formatValue($item['value'], $depth)
             );
         } elseif ($item['status'] === 'changed') {
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 5),
                 $indent,
                 REMOVED_PREFIX,
@@ -63,7 +62,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 COLON,
                 formatValue($item['old_value'], $depth)
             );
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 5),
                 $indent,
                 ADDED_PREFIX,
@@ -72,7 +71,7 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
                 formatValue($item['new_value'], $depth)
             );
         } elseif ($item['status'] === 'unchanged') {
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 5),
                 $indent,
                 NESTED_PREFIX,
@@ -82,21 +81,21 @@ function getStylishFormat(array $diff, bool $root = true, int $depth = 1): array
             );
         } elseif ($item['status'] === 'nested') {
             $nestedResult = getStylishFormat($item['children'], false, $depth + 1);
-            $formattedValue[] = sprintf(
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 4),
                 $indent,
                 NESTED_PREFIX,
                 $key,
                 OPEN_BRACE
             );
-            $formattedValue[] = implode("\n", $nestedResult);
-            $formattedValue[] = sprintf(
+            $result[] = implode("\n", $nestedResult);
+            $result[] = sprintf(
                 getSpecifier(SPECIFIER, 2),
                 $indent,
                 CLOSING_BRACE
             );
         }
-        return array_merge($result, $formattedValue);
+        return $result;
     }, []);
 }
 
@@ -125,7 +124,7 @@ function formatValue(mixed $value, int $depth = 1): string
     };
 }
 
-function getSpecifier($specifier, $stringQty)
+function getSpecifier(string $specifier, int $stringQty): string
 {
     return str_repeat($specifier, $stringQty);
 }
