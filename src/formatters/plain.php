@@ -47,8 +47,3 @@ function getFullPath(string $prefix, string $key): string
 {
     return ($prefix !== '') ? "$prefix.$key" : $key;
 }
-
-function getAddString()
-{
-    return array_merge($result, ["Property '$fullPath' was added with value: $value"]);
-}

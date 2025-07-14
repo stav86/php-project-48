@@ -68,7 +68,6 @@ function getDiff(array $data1, array $data2): array
                 'value' => $data1[$key]]]
             );
         }
-        return $result;
     }, []);
 }
 

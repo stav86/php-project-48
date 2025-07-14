@@ -22,14 +22,10 @@ function parseData(string $extension, string $toPathFile): array
 function parseJson(string $pathFile): mixed
 {
     if (!file_exists($pathFile)) {
-        throw new InvalidArgumentException("File: not found '$pathFile'");
+        throw new InvalidArgumentException("File not found '$pathFile'");
     }
 
     $fileContent = file_get_contents($pathFile);
-
-    if ($fileContent === false) {
-        throw new InvalidArgumentException("Unknown data: '$pathFile'");
-    }
 
     return json_decode($fileContent, true, JSON_THROW_ON_ERROR);
 }
@@ -37,14 +33,10 @@ function parseJson(string $pathFile): mixed
 function parseYaml(string $pathFile): mixed
 {
     if (!file_exists($pathFile)) {
-        throw new InvalidArgumentException("File: not found '$pathFile'");
+        throw new InvalidArgumentException("File not found '$pathFile'");
     }
 
     $fileContent = file_get_contents($pathFile);
-
-    if ($fileContent === false) {
-        throw new InvalidArgumentException("Unknown data: '$pathFile'");
-    }
 
     return Yaml::parse($fileContent, Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE);
 }
