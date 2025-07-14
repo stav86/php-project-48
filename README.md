@@ -11,7 +11,7 @@ The difference calculator compares JSON, YAML, YML files, with the ability to ou
 * Plain
 * Json
 
-# System requirements
+### System requirements
 * [PHP ver.8.3+](https://www.php.net/downloads.php)
 * [Symfony Yaml ver.7+](https://symfony.com/doc/current/components/yaml.html)
 * [DocOpt ver.1+](https://docopt.org/)
