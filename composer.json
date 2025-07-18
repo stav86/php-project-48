@@ -8,12 +8,12 @@
             "Tests\\": "tests/"
         },
         "files": [
-            "src/parsers.php",
-            "src/differ.php",
-            "src/formatters/stylish.php",
-            "src/formatters/plain.php",
-            "src/formatters/json.php",
-            "src/formatters.php"
+            "src/Parsers.php",
+            "src/Differ.php",
+            "src/formatters/Stylish.php",
+            "src/formatters/Plain.php",
+            "src/formatters/Json.php",
+            "src/Formatters.php"
         ]
     },
     "authors": [
