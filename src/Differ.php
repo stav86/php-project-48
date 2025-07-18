@@ -5,8 +5,11 @@ namespace Differ\Differ;
 use InvalidArgumentException;
 
 use function Funct\Collection\sortBy;
-use function GenDiff\Src\Parsers\parseData;
-use function GenDiff\Src\Formatters\getFormatters;
+use function Differ\Formatters\getFormatters;
+use function Differ\Parsers\{
+    parseData,
+    getExtension,
+};
 
 const ADD = 'added';
 const REMOVE = 'removed';
@@ -19,10 +22,8 @@ function genDiff(
     string $toPathFile2,
     string $format = 'stylish'
 ): string {
-    $extensionFile1 = getExtension($toPathFile1);
-    $extensionFile2 = getExtension($toPathFile2);
-    $parseFile1 = parseData($extensionFile1, $toPathFile1);
-    $parseFile2 = parseData($extensionFile2, $toPathFile2);
+    $parseFile1 = parseData($toPathFile1);
+    $parseFile2 = parseData($toPathFile2);
     $buildDiff = getDiff($parseFile1, $parseFile2);
     return getFormatters($buildDiff, $format);
 }
@@ -69,9 +70,4 @@ function getDiff(array $data1, array $data2): array
             );
         }
     }, []);
-}
-
-function getExtension(string $toPathFile): string
-{
-    return pathinfo($toPathFile, PATHINFO_EXTENSION);
 }

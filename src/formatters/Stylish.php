@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Formatters\Stylish;
+namespace Differ\Formatters\Stylish;
 
 const ADDED_PREFIX = '+ ';
 const REMOVED_PREFIX = '- ';

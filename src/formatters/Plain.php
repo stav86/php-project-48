@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Formatters\Plain;
+namespace Differ\Formatters\Plain;
 
 function getPlain(array $diff): string
 {

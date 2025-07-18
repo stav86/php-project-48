@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Formatters;
+namespace Differ\Formatters;
 
 use InvalidArgumentException;
 
@@ -22,10 +22,12 @@ function getPlainFormat(array $formatData): string
 {
     return Plain\getPlain($formatData);
 }
+
 function getJsonFormat(array $formatData): string
 {
     return Json\getJson($formatData);
 }
+
 function getStylishFormat(array $formatData): string
 {
     return Stylish\getStylish($formatData);

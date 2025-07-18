@@ -7,12 +7,12 @@ use Symfony\Component\Yaml\Yaml;
 use InvalidArgumentException;
 
 use function Differ\Differ\genDiff;
-use function GenDiff\Src\Formatters\{
+use function Differ\Formatters\{
     Stylish\getStylish,
     Plain\getPlain,
     Json\getJson,
 };
-use function GenDiff\Src\Parsers\{
+use function Differ\Parsers\{
     parseData,
     parseJson,
     parseYaml,

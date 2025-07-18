@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Formatters\Json;
+namespace Differ\Formatters\Json;
 
 function getJson(array $diff): string
 {

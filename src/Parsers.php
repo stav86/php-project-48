@@ -1,6 +1,6 @@
 <?php
 
-namespace GenDiff\Src\Parsers;
+namespace Differ\Parsers;
 
 use Symfony\Component\Yaml\Yaml;
 use InvalidArgumentException;
@@ -9,14 +9,20 @@ const JSON = 'json';
 const YAML = 'yaml';
 const YML = 'yml';
 
-function parseData(string $extension, string $toPathFile): array
+function parseData(string $toPathFile): array
 {
+    $extension = getExtension($toPathFile);
     return match ($extension) {
         JSON => parseJson($toPathFile),
         YAML => parseYaml($toPathFile),
         YML => parseYaml($toPathFile),
         default => throw new InvalidArgumentException("Unknown extension: '$extension'"),
     };
+}
+
+function getExtension(string $toPathFile): string
+{
+    return pathinfo($toPathFile, PATHINFO_EXTENSION);
 }
 
 function parseJson(string $pathFile): mixed
